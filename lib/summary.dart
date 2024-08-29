@@ -249,7 +249,7 @@ class SummaryViewState extends State<SummaryView> {
                       DataColumn(label: Text('Part')),
                       DataColumn(label: Text('Standard')),
                       DataColumn(label: Text('Unit')),
-                      DataColumn(label: Text('Hysteresis')),
+                      DataColumn(label: Text('Tolerance')),
                       DataColumn(label: Text('Count')),
                     ],
                     rows: _logData

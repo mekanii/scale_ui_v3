@@ -365,7 +365,7 @@ class PartsViewState extends State<PartsView> {
                           DoubleInputFormatter(),
                         ],
                         decoration: const InputDecoration(
-                          labelText: 'Hysteresis',
+                          labelText: 'Tolerance',
                           labelStyle: TextStyle(fontSize: 18),
                         ),
                       )
@@ -534,7 +534,7 @@ class PartsViewState extends State<PartsView> {
                             style: const TextStyle(fontSize: 18),
                           ),
                           subtitle: Text(
-                            '${part.unit == 'gr' ? part.std.toStringAsFixed(0) : part.std.toStringAsFixed(2)} ${part.unit}\nHysteresis: ${part.hysteresis.toStringAsFixed(2)}',
+                            '${part.unit == 'gr' ? part.std.toStringAsFixed(0) : part.std.toStringAsFixed(2)} ${part.unit}\nTolerance: ${part.hysteresis.toStringAsFixed(2)}',
                             style: const TextStyle(fontSize: 16),
                           ),
                         );

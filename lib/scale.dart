@@ -367,7 +367,7 @@ class ScaleViewState extends State<ScaleView> {
                       alignment: Alignment.centerRight,
                       padding: const EdgeInsets.fromLTRB(0, 0, 32, 0),
                       child: Text(
-                        _selectedPart == null ? '' : 'Hysteresis ${_selectedPart!.hysteresis.toStringAsFixed(2)} ${_selectedPart!.unit}',
+                        _selectedPart == null ? '' : 'Tolerance ${_selectedPart!.hysteresis.toStringAsFixed(2)} ${_selectedPart!.unit}',
                         style: const TextStyle(fontSize: 36),
                       ),
                     ),
