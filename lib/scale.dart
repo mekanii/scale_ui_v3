@@ -65,29 +65,33 @@ class ScaleViewState extends State<ScaleView> {
   }
 
   void _onWeightUpdate(Map<String, dynamic> weightUpdate) async {
-    if (mounted) {
-      setState(() {
-        _weightUpdate = weightUpdate;
-        if (_selectedPart?.unit == 'gr' && weightUpdate['weight'] > -1 && weightUpdate['weight'] < 0) {
-          _weight = 0;
-        } else {
-          _weight = weightUpdate['weight'];
-        }
-        
-        if (weightUpdate['check'] == 1 && weightUpdate['check'] != _lastCheck) {
-          _statusLabel = 'QTY GOOD';
-          _textStyle = TextStyle(fontSize: 64, color: Colors.green[700]);
-          SoundPlayer.OK(context);
-          logData(_selectedPart!, _weight, 'OK');
-        } else if (weightUpdate['check'] == 2 && weightUpdate['check'] != _lastCheck) {
-          _statusLabel = 'NOT GOOD';
-          _textStyle = TextStyle(fontSize: 64, color: Colors.red[700]);
-          SoundPlayer.NG(context);
-        } else if (weightUpdate['check'] == 0 && weightUpdate['check'] != _lastCheck) {
-          _statusLabel = '';
-        }
-        _lastCheck = weightUpdate['check'];
-      });
+    try {
+      if (mounted) {
+        setState(() {
+          _weightUpdate = weightUpdate;
+          if (_selectedPart?.unit == 'gr' && weightUpdate['weight'] > -1 && weightUpdate['weight'] < 0) {
+            _weight = 0;
+          } else {
+            _weight = weightUpdate['weight'];
+          }
+          
+          if (weightUpdate['check'] == 1 && weightUpdate['check'] != _lastCheck) {
+            _statusLabel = 'QTY GOOD';
+            _textStyle = TextStyle(fontSize: 64, color: Colors.green[700]);
+            SoundPlayer.OK(context);
+            logData(_selectedPart!, _weight, 'OK');
+          } else if (weightUpdate['check'] == 2 && weightUpdate['check'] != _lastCheck) {
+            _statusLabel = 'NOT GOOD';
+            _textStyle = TextStyle(fontSize: 64, color: Colors.red[700]);
+            SoundPlayer.NG(context);
+          } else if (weightUpdate['check'] == 0 && weightUpdate['check'] != _lastCheck) {
+            _statusLabel = '';
+          }
+          _lastCheck = weightUpdate['check'];
+        });
+      }
+    } catch (e) {
+      notification(context, 'Error updating weight: $e', false);
     }
   }
 
