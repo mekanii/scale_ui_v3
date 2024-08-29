@@ -171,30 +171,24 @@ class GetDirectory {
 }
 
 class SoundPlayer {
-  static final SoundPlayer _instance = SoundPlayer._internal();
   final AudioPlayer _audioPlayer = AudioPlayer();
 
-  // Private constructor
-  SoundPlayer._internal();
-
-  // Factory constructor to return the same instance
-  factory SoundPlayer() {
-    return _instance;
-  }
-
-  static Future<void> OK(BuildContext context) async {
-    await _playSound('OK.mp3', context);
-  }
-
-  static Future<void> NG(BuildContext context) async {
-    await _playSound('NG.mp3', context);
-  }
-
-  static Future<void> _playSound(String assetPath, BuildContext context) async {
+  Future<void> OK(BuildContext context) async {
     try {
-      await _instance._audioPlayer.setSource(AssetSource(assetPath));
-      await _instance._audioPlayer.resume();
+      await _audioPlayer.setSource(AssetSource('assets/OK.mp3'));
+      await _audioPlayer.resume();
     } catch (e) {
+      print('Error playing OK sound: $e'); // Log the error
+      notification(context, 'Error playing sound: $e', false);
+    }
+  }
+
+  Future<void> NG(BuildContext context) async {
+    try {
+      await _audioPlayer.setSource(AssetSource('assets/NG.mp3'));
+      await _audioPlayer.resume();
+    } catch (e) {
+      print('Error playing NG sound: $e'); // Log the error
       notification(context, 'Error playing sound: $e', false);
     }
   }
