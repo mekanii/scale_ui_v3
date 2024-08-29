@@ -36,7 +36,8 @@ class SummaryViewState extends State<SummaryView> {
         final List<FileSystemEntity> entities = await logsDirectory.list().toList();
         for (var entity in entities) {
           if (entity is File && entity.path.endsWith('.json')) {
-            logs.add(entity.path.split('/').last);
+            // Use Platform.pathSeparator for cross-platform compatibility
+            logs.add(entity.path.split(Platform.pathSeparator).last);
           }
         }
         logs.sort((a, b) => b.compareTo(a));
