@@ -8,7 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
 
 class PortProvider with ChangeNotifier {
   final List<SerialPort> _ports = [];
@@ -170,30 +171,80 @@ class GetDirectory {
   }
 }
 
-class SoundPlayer {
-  final AudioPlayer _audioPlayer = AudioPlayer();
+// class SoundPlayer {
+//   final AudioPlayer _audioPlayer = AudioPlayer();
 
+//   Future<void> OK(BuildContext context) async {
+//     try {
+//       await _audioPlayer.setSource(AssetSource('OK.mp3'));
+//       await _audioPlayer.resume();
+//     } catch (e) {
+//       print('Error playing OK sound: $e'); // Log the error
+//       notification(context, 'Error playing sound: $e', false);
+//     }
+//   }
+
+//   Future<void> NG(BuildContext context) async {
+//     try {
+//       await _audioPlayer.setSource(AssetSource('NG.mp3'));
+//       await _audioPlayer.resume();
+//     } catch (e) {
+//       print('Error playing NG sound: $e'); // Log the error
+//       notification(context, 'Error playing sound: $e', false);
+//     }
+//   }
+
+//   void stopSound() {
+//     _audioPlayer.stop(); // Stop playing the sound
+//   }
+// }
+
+class SoundPlayer {
+  final _playerOK = AudioPlayer();
+  final _playerNG = AudioPlayer();
+
+  Future<void> init() async {
+    // Listen to errors during playback.
+    _playerOK.playbackEventStream.listen((event) {},
+        onError: (Object e, StackTrace stackTrace) {
+      print('A stream error occurred: $e');
+    });
+    // Try to load audio from a source and catch any errors.
+    try {
+      await _playerOK.setAudioSource(AudioSource.asset('/assets/OK.mp3'));
+      await _playerNG.setAudioSource(AudioSource.asset('/assets/NG.mp3'));
+    } on PlayerException catch (e) {
+      print("Error loading audio source: $e");
+    }
+  }
+
+  
   Future<void> OK(BuildContext context) async {
     try {
-      await _audioPlayer.setSource(AssetSource('OK.mp3'));
-      await _audioPlayer.resume();
+      await _playerOK.play();
     } catch (e) {
-      print('Error playing OK sound: $e'); // Log the error
+      print('Error playing OK sound: $e');
       notification(context, 'Error playing sound: $e', false);
     }
   }
 
   Future<void> NG(BuildContext context) async {
     try {
-      await _audioPlayer.setSource(AssetSource('NG.mp3'));
-      await _audioPlayer.resume();
+      await _playerNG.play();
     } catch (e) {
-      print('Error playing NG sound: $e'); // Log the error
+      print('Error playing OK sound: $e');
       notification(context, 'Error playing sound: $e', false);
     }
   }
 
-  void stopSound() {
-    _audioPlayer.stop(); // Stop playing the sound
+  void dispose() {
+    _playerOK.dispose();
+    _playerNG.dispose();
   }
+
+  void stop() {
+    _playerOK.stop();
+    _playerNG.stop();
+  }
+
 }

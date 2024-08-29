@@ -7,11 +7,12 @@ environment:
   sdk: ^3.5.0
 
 dependencies:
-  audioplayers: ^6.1.0
+  # audioplayers: ^6.1.0
   flutter:
     sdk: flutter
   flutter_libserialport: ^0.4.0
   intl: ^0.19.0
+  just_audio: ^0.9.40
   path_provider: ^2.1.4
   provider: ^6.1.2
   window_manager: ^0.4.2

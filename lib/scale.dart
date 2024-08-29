@@ -48,6 +48,7 @@ class ScaleViewState extends State<ScaleView> {
   void initState() {
     super.initState();
     portFlush();
+    SoundPlayer().init();
     _fetchParts();
     setState(() {
       _taskGetWeight = GetWeight(
@@ -61,11 +62,15 @@ class ScaleViewState extends State<ScaleView> {
   @override
   void dispose() {
     _taskGetWeight?.stop();
+
+    SoundPlayer().stop();
+    SoundPlayer().dispose();
+    
     super.dispose();
   }
 
   void _onWeightUpdate(Map<String, dynamic> weightUpdate) async {
-    int lastCheck = 0;
+    final int lastCheck = _lastCheck;
     try {
       if (mounted) {
         setState(() {
@@ -85,19 +90,16 @@ class ScaleViewState extends State<ScaleView> {
           } else if (weightUpdate['check'] == 0 && weightUpdate['check'] != _lastCheck) {
             _statusLabel = '';
           }
-        });
-
-        if (weightUpdate['check'] == 1 && weightUpdate['check'] != _lastCheck) {
-          await SoundPlayer().OK(context);
-          await logData(_selectedPart!, _weight, 'OK');
-        } else if (weightUpdate['check'] == 2 && weightUpdate['check'] != _lastCheck) {
-          await SoundPlayer().NG(context);
-        }
-
-        setState(() {
           _lastCheck = weightUpdate['check'];
         });
 
+        if (weightUpdate['check'] == 1 && weightUpdate['check'] != lastCheck) {
+          await SoundPlayer().OK(context);
+          await logData(_selectedPart!, _weight, 'OK');
+        } else if (weightUpdate['check'] == 2 && weightUpdate['check'] != lastCheck) {
+          await SoundPlayer().NG(context);
+        }
+        
       }
     } catch (e) {
       notification(context, 'Error updating weight: $e', false);
