@@ -87,12 +87,12 @@ class ScaleViewState extends State<ScaleView> {
         });
 
         if (weightUpdate['check'] == 1 && weightUpdate['check'] != _lastCheck) {
-          await SoundPlayer.OK(context);
+          // await SoundPlayer.OK(context);
           await logData(_selectedPart!, _weight, 'OK');
         } else if (weightUpdate['check'] == 2 && weightUpdate['check'] != _lastCheck) {
-          await SoundPlayer.NG(context);
+          // await SoundPlayer.NG(context);
         }
-        
+
         _lastCheck = weightUpdate['check'];
       }
     } catch (e) {
