@@ -65,6 +65,7 @@ class ScaleViewState extends State<ScaleView> {
   }
 
   void _onWeightUpdate(Map<String, dynamic> weightUpdate) async {
+    int lastCheck = 0;
     try {
       if (mounted) {
         setState(() {
@@ -93,7 +94,10 @@ class ScaleViewState extends State<ScaleView> {
           await SoundPlayer().NG(context);
         }
 
-        _lastCheck = weightUpdate['check'];
+        setState(() {
+          _lastCheck = weightUpdate['check'];
+        });
+
       }
     } catch (e) {
       notification(context, 'Error updating weight: $e', false);

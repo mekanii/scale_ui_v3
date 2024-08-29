@@ -175,7 +175,7 @@ class SoundPlayer {
 
   Future<void> OK(BuildContext context) async {
     try {
-      await _audioPlayer.setSource(AssetSource('assets/OK.mp3'));
+      await _audioPlayer.setSource(AssetSource('OK.mp3'));
       await _audioPlayer.resume();
     } catch (e) {
       print('Error playing OK sound: $e'); // Log the error
@@ -185,7 +185,7 @@ class SoundPlayer {
 
   Future<void> NG(BuildContext context) async {
     try {
-      await _audioPlayer.setSource(AssetSource('assets/NG.mp3'));
+      await _audioPlayer.setSource(AssetSource('NG.mp3'));
       await _audioPlayer.resume();
     } catch (e) {
       print('Error playing NG sound: $e'); // Log the error
