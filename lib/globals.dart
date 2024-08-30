@@ -2,7 +2,6 @@ library globals;
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:flutter_libserialport/flutter_libserialport.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -61,13 +60,13 @@ void detectUsbHotPlug(BuildContext context) {
 Future<Map<String, dynamic>> open() async {
   final portconfig = SerialPortConfig();
   portconfig.baudRate = _baudRate;
+  port!.config = portconfig;
   
   if (!port!.openReadWrite()) {
     isConnected = false;
     return {'status': false, 'error': SerialPort.lastError};
   }
 
-  port!.config = portconfig;
 
   isConnected = true;
   return {'status': true, 'error': null};
@@ -82,6 +81,7 @@ Future<bool> sendRequest(Map<String, dynamic> request) async {
     String message = '${jsonEncode(request)}\n';
     print(message);
     if (isConnected) {
+      print(utf8.encode(message));
       port!.write(Uint8List.fromList(utf8.encode(message)));
     } else {
       return false;
