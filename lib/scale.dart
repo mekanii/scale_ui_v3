@@ -92,6 +92,7 @@ class ScaleViewState extends State<ScaleView> {
           await logData(_selectedPart!, _weight, 'OK');
         } else if (weightUpdate['check'] == 2 && weightUpdate['check'] != _lastCheck) {
           await SoundPlayer().NG(context);
+          await logData(_selectedPart!, _weight, 'NG');
         }
 
         setState(() {
@@ -204,7 +205,7 @@ class ScaleViewState extends State<ScaleView> {
       "part": part.name,
       "std": part.std,
       "unit": part.unit,
-      "hysteresis": part.hysteresis,
+      "tolerance": part.hysteresis,
       "measured": weight,
       "status": status
     };

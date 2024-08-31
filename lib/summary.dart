@@ -67,14 +67,19 @@ class SummaryViewState extends State<SummaryView> {
       for (var item in jsonData) {
         final part = item['part'];
         if (groupedData.containsKey(part)) {
-          groupedData[part]!['count'] += 1;
+          if (item['status'] == 'OK') {
+            groupedData[part]!['OK'] += 1;
+          } else if (item['status'] == 'NG') {
+            groupedData[part]!['NG'] += 1;
+          }
         } else {
           groupedData[part] = {
             'part': part,
             'std': item['std'],
             'unit': item['unit'],
-            'hysteresis': item['hysteresis'],
-            'count': 1,
+            'tolerance': item['tolerance'],
+            'OK': item['status'] == 'OK' ? 1 : 0,
+            'NG': item['status'] == 'NG' ? 1 : 0,
           };
         }
       }
@@ -251,7 +256,8 @@ class SummaryViewState extends State<SummaryView> {
                       DataColumn(label: Text('Standard')),
                       DataColumn(label: Text('Unit')),
                       DataColumn(label: Text('Tolerance')),
-                      DataColumn(label: Text('Count')),
+                      DataColumn(label: Text('OK')),
+                      DataColumn(label: Text('NG')),
                     ],
                     rows: _logData
                       .map((data) => DataRow(
@@ -272,13 +278,19 @@ class SummaryViewState extends State<SummaryView> {
                           DataCell(
                             Align(
                               alignment: Alignment.centerRight,
-                              child: Text(data['hysteresis'].toString()), // Right aligned
+                              child: Text(data['tolerance'].toString()), // Right aligned
                             ),
                           ),
                           DataCell(
                             Align(
                               alignment: Alignment.centerRight,
-                              child: Text(data['count'].toString()), // Right aligned
+                              child: Text(data['OK'].toString()), // Right aligned
+                            ),
+                          ),
+                          DataCell(
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(data['NG'].toString()), // Right aligned
                             ),
                           ),
                         ]
